@@ -1,67 +1,36 @@
-import { BarChart3, Clock3, LayoutDashboard, Lock } from "lucide-react";
+"use client"
 
-const placeholders = [
-  "Conversation volume by channel",
-  "Outcome completion by flow",
-  "Agent performance benchmarking",
-  "Sentiment and escalation trends",
-];
+import { Header } from "@/components/header"
+import { Card, CardContent } from "@/components/ui/card"
+import { BarChart3 } from "lucide-react"
 
 export default function ReportsPage() {
   return (
-    <div className="space-y-8">
-      <section>
-        <h1 className="text-3xl font-semibold text-[#3B4760]">Reports</h1>
-        <p className="mt-2 text-sm text-[#6A738A]">
-          Analytics and insights from your conversations.
-        </p>
-      </section>
+    <div className="min-h-screen bg-[#F6F8FA]">
+      <Header />
 
-      <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-        {placeholders.map((item) => (
-          <div
-            key={item}
-            className="rounded-lg border border-[#E8F0FB] bg-white p-5 opacity-70 shadow-sm"
-          >
-            <div className="h-4 w-28 rounded-full bg-[#E8F0FB]" />
-            <div className="mt-5 h-8 w-20 rounded-md bg-[#F6F8FA]" />
-            <div className="mt-6 space-y-2">
-              <div className="h-3 w-full rounded-full bg-[#F6F8FA]" />
-              <div className="h-3 w-4/5 rounded-full bg-[#F6F8FA]" />
-              <div className="h-3 w-3/5 rounded-full bg-[#F6F8FA]" />
-            </div>
-            <p className="mt-5 text-sm text-[#94A3B8]">{item}</p>
-          </div>
-        ))}
-      </section>
-
-      <section className="rounded-lg border border-dashed border-[#2F8FFF] bg-white px-8 py-16 text-center shadow-sm">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#E8F0FB] text-[#2F8FFF]">
-          <BarChart3 className="h-8 w-8" />
+      <main className="container mx-auto px-6 py-6">
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold text-[#3B4760]">Reports</h1>
+          <p className="text-sm text-[#6B7280] mt-1">Analytics and insights from your conversations</p>
         </div>
-        <h2 className="mt-6 text-2xl font-semibold text-[#3B4760]">Advanced analytics are coming soon</h2>
-        <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[#6A738A]">
-          We’re building a richer reporting suite with channel analytics, intent trends,
-          conversion dashboards, and executive-ready exports so teams can act on every
-          conversation insight.
-        </p>
 
-        <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-3">
-          {[
-            { icon: LayoutDashboard, label: "Custom dashboards" },
-            { icon: Clock3, label: "Historical trend views" },
-            { icon: Lock, label: "Role-based report sharing" },
-          ].map(({ icon: Icon, label }) => (
-            <div
-              key={label}
-              className="rounded-lg border border-[#E8F0FB] bg-[#F6F8FA] px-4 py-5"
-            >
-              <Icon className="mx-auto h-5 w-5 text-[#2F8FFF]" />
-              <p className="mt-3 text-sm font-medium text-[#3B4760]">{label}</p>
+        {/* Under Development Message */}
+        <Card className="bg-white border-[#E8F0FB]">
+          <CardContent className="p-12">
+            <div className="flex flex-col items-center justify-center text-center max-w-md mx-auto">
+              <div className="h-16 w-16 rounded-full bg-[#E8F0FB] flex items-center justify-center mb-4">
+                <BarChart3 className="h-8 w-8 text-[#2F8FFF]" />
+              </div>
+              <h2 className="text-xl font-semibold text-[#3B4760] mb-2">Reports Coming Soon</h2>
+              <p className="text-[#6B7280] leading-relaxed">
+                This section is currently under development. Advanced reporting and analytics features will be available
+                here soon, including detailed conversation insights, performance metrics, and custom report generation.
+              </p>
             </div>
-          ))}
-        </div>
-      </section>
+          </CardContent>
+        </Card>
+      </main>
     </div>
-  );
+  )
 }

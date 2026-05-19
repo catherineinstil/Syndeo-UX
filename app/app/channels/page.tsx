@@ -1,90 +1,257 @@
+"use client"
+
+import { Header } from "@/components/header"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import {
-  Bot,
-  MessageCircle,
-  MessagesSquare,
+  Globe,
   Monitor,
-  Phone,
-  Send,
+  MessageCircle,
+  Facebook,
+  MessageSquare,
   Smartphone,
-  Webhook,
-} from "lucide-react";
+  Slack,
+  Mail,
+  Send,
+  Phone,
+  Check,
+  Zap,
+  Trash2,
+  ArrowLeft,
+} from "lucide-react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 const channels = [
-  { type: "Widgets > Desktop", name: "desktop production", idLabel: "Bot Id", value: "780769152729088", icon: Monitor },
-  { type: "DialogFlow CX", name: "DFCX Production Cha...", idLabel: "Bot Id", value: "d4358055-259b-42...", icon: Bot },
-  { type: "Facebook", name: "Codeseek test page", idLabel: "Bot Id", value: "115580038066282", icon: MessageCircle },
-  { type: "Line", name: "Line channel", idLabel: "Bot Id", value: "Ufadec39888653ff2...", icon: MessagesSquare },
-  { type: "Mobile", name: "mobile production ch...", idLabel: "Bot Id", value: "338831446376448", icon: Smartphone },
-  { type: "Slack", name: "Slack Channel", idLabel: "Bot Id", value: "A06SAH90URM", icon: MessagesSquare },
-  { type: "SMS", name: "SMS Production Cha...", idLabel: "Phone", value: "+447361582408", icon: Phone },
-  { type: "Telegram", name: "Telegram Production...", idLabel: "Bot Id", value: "8576692908:AAGY4...", icon: Send },
-  { type: "Voice", name: "Voice production cha...", idLabel: "Bot Id", value: "128478032691200", icon: Phone },
-  { type: "Web", name: "web production uk", idLabel: "Bot Id", value: "WEB-829104-UK", icon: Webhook },
-  { type: "Web", name: "web lead gen", idLabel: "Bot Id", value: "WEB-829105-LG", icon: Webhook },
-  { type: "Web", name: "web mortgage faq", idLabel: "Bot Id", value: "WEB-829106-MF", icon: Webhook },
-  { type: "Web", name: "web support portal", idLabel: "Bot Id", value: "WEB-829107-SP", icon: Webhook },
-  { type: "Web", name: "web sandbox channel", idLabel: "Bot Id", value: "WEB-829108-SB", icon: Webhook },
-  { type: "WhatsApp", name: "WhatsApp Productio...", idLabel: "Bot Id", value: "+447488892962", icon: MessageCircle },
-];
+  {
+    id: "desktop",
+    name: "Desktop",
+    displayName: "desktop production",
+    type: "Desktop",
+    botId: "780769152729088",
+    icon: Monitor,
+    color: "#808A9F",
+  },
+  {
+    id: "dialogflow-cx",
+    name: "DialogFlow CX",
+    displayName: "DFCX Production Cha...",
+    type: "DialogFlow CX",
+    botId: "d4358055-259b-42...",
+    icon: MessageCircle,
+    color: "#2F8FFF",
+  },
+  {
+    id: "facebook",
+    name: "Facebook",
+    displayName: "Codeseek test page",
+    type: "Facebook",
+    botId: "115580038066282",
+    icon: Facebook,
+    color: "#0866FF",
+  },
+  {
+    id: "line",
+    name: "Line",
+    displayName: "Line channel",
+    type: "Line",
+    botId: "Ufadec39888653ff2...",
+    icon: MessageSquare,
+    color: "#00C300",
+  },
+  {
+    id: "mobile",
+    name: "Mobile",
+    displayName: "mobile production ch...",
+    type: "Mobile",
+    botId: "338831446376448",
+    icon: Smartphone,
+    color: "#6A738A",
+  },
+  {
+    id: "slack",
+    name: "Slack",
+    displayName: "Slack Channel",
+    type: "Slack",
+    botId: "A06SAH90URM",
+    icon: Slack,
+    color: "#611F69",
+  },
+  {
+    id: "sms",
+    name: "SMS",
+    displayName: "SMS Production Cha...",
+    type: "SMS",
+    phoneNumber: "+447361582408",
+    icon: Mail,
+    color: "#64B5F6",
+  },
+  {
+    id: "telegram",
+    name: "Telegram",
+    displayName: "Telegram Production ...",
+    type: "Telegram",
+    botId: "8576692908:AAGY4...",
+    icon: Send,
+    color: "#0088CC",
+  },
+  {
+    id: "voice",
+    name: "Voice",
+    displayName: "Voice production cha...",
+    type: "Voice",
+    botId: "128478032691200",
+    icon: Phone,
+    color: "#D32F2F",
+  },
+  {
+    id: "web-1",
+    name: "Web",
+    displayName: "Bohdan test producti...",
+    type: "Web",
+    botId: "220103249494016",
+    icon: Globe,
+    color: "#5B6B8C",
+  },
+  {
+    id: "web-2",
+    name: "Web",
+    displayName: "PROD test web chan...",
+    type: "Web",
+    botId: "542705356636160",
+    icon: Globe,
+    color: "#5B6B8C",
+  },
+  {
+    id: "web-3",
+    name: "Web",
+    displayName: "production 2",
+    type: "Web",
+    botId: "405210333708288",
+    icon: Globe,
+    color: "#5B6B8C",
+  },
+  {
+    id: "web-4",
+    name: "Web",
+    displayName: "test",
+    type: "Web",
+    botId: "592682401398784",
+    icon: Globe,
+    color: "#5B6B8C",
+  },
+  {
+    id: "web-5",
+    name: "Web",
+    displayName: "Test to remove",
+    type: "Web",
+    botId: "183804652158976",
+    icon: Globe,
+    color: "#5B6B8C",
+  },
+  {
+    id: "whatsapp",
+    name: "WhatsApp",
+    displayName: "WhatsApp Productio...",
+    type: "WhatsApp",
+    botId: "+447488892962",
+    icon: Check,
+    color: "#25D366",
+  },
+]
 
 export default function ChannelsPage() {
+  const router = useRouter()
+
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h1 className="text-3xl font-semibold text-[#3B4760]">Your Channels</h1>
-          <p className="mt-2 text-sm text-[#6A738A]">
-            Manage every test and production endpoint connected to your Syndeo estate.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <button className="rounded-lg bg-[#2F8FFF] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#1E7FEF]">
-            Add Test Channel
-          </button>
-          <button className="rounded-lg bg-[#2F8FFF] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#1E7FEF]">
-            Add Production Channel
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#F6F8FA]">
+      <Header />
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {channels.map(({ type, name, idLabel, value, icon: Icon }) => (
-          <div
-            key={`${type}-${name}`}
-            className="rounded-lg border border-[#E8F0FB] bg-white p-5 shadow-sm"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#E8F0FB] text-[#2F8FFF]">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-[#3B4760]">{type}</p>
-                  <p className="mt-1 text-xs text-[#94A3B8]">Connected channel</p>
-                </div>
-              </div>
-              <span className="rounded-full bg-[#F6F8FA] px-2.5 py-1 text-xs font-medium text-[#6A738A]">
-                Live
-              </span>
-            </div>
-
-            <div className="mt-5 space-y-2 text-sm">
-              <p className="text-[#3B4760]">
-                <span className="font-medium">Name:</span>{" "}
-                <span className="text-[#6A738A]">{name}</span>
-              </p>
-              <p className="text-[#3B4760]">
-                <span className="font-medium">{idLabel}:</span>{" "}
-                <span className="text-[#6A738A]">{value}</span>
-              </p>
-            </div>
-
-            <button className="mt-6 inline-flex rounded-lg border border-[#E8F0FB] px-4 py-2.5 text-sm font-semibold text-[#3B4760] transition hover:bg-[#F6F8FA]">
-              Delete Channel
+      <main className="container mx-auto px-6 py-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => router.push("/")}
+              className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-muted transition-colors"
+              aria-label="Back to home"
+            >
+              <ArrowLeft className="h-5 w-5 text-foreground" />
             </button>
+            <h1 className="text-2xl font-semibold text-foreground flex items-center gap-2">
+              Your Channels
+              <button className="w-4 h-4 rounded-full bg-muted flex items-center justify-center text-[10px] text-muted-foreground hover:bg-muted/80">
+                ?
+              </button>
+            </h1>
           </div>
-        ))}
-      </div>
+          <div className="flex items-center gap-3">
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Zap className="h-4 w-4 mr-2" />
+              Add Test Channel
+            </Button>
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Zap className="h-4 w-4 mr-2" />
+              Add Production Channel
+            </Button>
+            <Button variant="outline" className="border-border bg-transparent">
+              Widgets
+            </Button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {channels.map((channel) => {
+            const Icon = channel.icon
+            return (
+              <Link key={channel.id} href={`/channels/${channel.id}`}>
+                <Card className="relative bg-card border-border hover:border-primary/50 transition-all cursor-pointer group">
+                  <div className="absolute top-3 right-3">
+                    <Zap className="h-4 w-4 text-muted-foreground" />
+                  </div>
+
+                  <CardContent className="p-6 space-y-4">
+                    <div className="flex justify-center">
+                      <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
+                        <Icon className="h-8 w-8" style={{ color: channel.color }} />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 text-center">
+                      <h3 className="font-semibold text-foreground">{channel.type}</h3>
+                      <div className="space-y-1 text-sm">
+                        <div>
+                          <span className="text-muted-foreground">Name:</span>
+                        </div>
+                        <div className="text-foreground">{channel.displayName}</div>
+                        <div className="mt-2">
+                          <span className="text-muted-foreground">
+                            {channel.phoneNumber ? "Phone Number:" : "Bot Id:"}
+                          </span>
+                        </div>
+                        <div className="text-foreground">{channel.phoneNumber || channel.botId}</div>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 border-t border-border">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                        onClick={(e) => {
+                          e.preventDefault()
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete Channel
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            )
+          })}
+        </div>
+      </main>
     </div>
-  );
+  )
 }

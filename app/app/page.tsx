@@ -1,178 +1,152 @@
-import {
-  Activity,
-  ArrowUpRight,
-  Bot,
-  Cable,
-  MessageSquare,
-  Sparkles,
-} from "lucide-react";
+"use client"
 
-const stats = [
-  {
-    title: "Total Conversations",
-    value: "12,847",
-    trend: "+12.4% vs last week",
-    icon: MessageSquare,
-  },
-  {
-    title: "Active Flows",
-    value: "8",
-    trend: "+2 new this month",
-    icon: Activity,
-  },
-  {
-    title: "Connected Channels",
-    value: "12",
-    trend: "+3 integrations live",
-    icon: Cable,
-  },
-  {
-    title: "AI Agents",
-    value: "24",
-    trend: "+6 published today",
-    icon: Bot,
-  },
-];
+import { useState } from "react"
+import { Header } from "@/components/header"
+import { Simulator } from "@/components/simulator"
+import { ConversationEngagement } from "@/components/conversation-engagement"
+import { ConnectedChannels } from "@/components/connected-channels"
+import { SkillsExperts } from "@/components/skills-experts"
+import { ChannelBreakdown } from "@/components/channel-breakdown"
+import { Button } from "@/components/ui/button"
+import { Plus } from 'lucide-react'
+import { AddWidgetModal } from "@/components/add-widget-modal"
+import { SplashScreen } from "@/components/splash-screen"
+import type { JSX } from "react/jsx-runtime"
 
-const recentActivity = [
-  {
-    event: "Checkout recovery flow triggered",
-    channel: "WhatsApp",
-    customer: "A. Walker",
-    status: "Completed",
-    time: "2 minutes ago",
-  },
-  {
-    event: "Retail FAQ agent answered shipping query",
-    channel: "Web",
-    customer: "Anonymous visitor",
-    status: "Resolved",
-    time: "11 minutes ago",
-  },
-  {
-    event: "Mortgage statement added to Kelvin",
-    channel: "AI Workbench",
-    customer: "Training dataset",
-    status: "Queued",
-    time: "28 minutes ago",
-  },
-  {
-    event: "New Facebook channel synced",
-    channel: "Facebook",
-    customer: "Codeseek test page",
-    status: "Connected",
-    time: "1 hour ago",
-  },
-  {
-    event: "Lead generation agent published",
-    channel: "AI Agents",
-    customer: "Retail vertical",
-    status: "Published",
-    time: "Today, 09:42",
-  },
-];
+export default function DashboardPage() {
+  const [showSplash, setShowSplash] = useState(true)
+  const [showAddWidget, setShowAddWidget] = useState(false)
+  const [activeWidgets, setActiveWidgets] = useState<string[]>([
+    "simulator",
+    "channel-breakdown",
+    "conversation-engagement",
+    "connected-channels",
+    "skills-experts",
+  ])
 
-export default function Home() {
+  const handleEnterPrototype = () => {
+    setShowSplash(false)
+  }
+
+  const handleShowSplash = () => {
+    setShowSplash(true)
+  }
+
+  const handleRemoveWidget = (widgetId: string) => {
+    setActiveWidgets((prev) => prev.filter((id) => id !== widgetId))
+  }
+
+  const handleAddWidgets = (widgetIds: string[]) => {
+    const leftColumnWidgets = ["conversations-closed", "messages-per-day"]
+    const rightColumnWidgets = ["favorite-colors", "popular-platforms"]
+
+    const newWidgets = [...activeWidgets]
+
+    widgetIds.forEach((id) => {
+      if (!newWidgets.includes(id)) {
+        if (leftColumnWidgets.includes(id)) {
+          const insertIndex = newWidgets.findIndex(
+            (w) => !["simulator", "channel-breakdown"].includes(w) && !leftColumnWidgets.includes(w),
+          )
+          if (insertIndex === -1) {
+            newWidgets.push(id)
+          } else {
+            newWidgets.splice(insertIndex, 0, id)
+          }
+        } else if (rightColumnWidgets.includes(id)) {
+          newWidgets.push(id)
+        } else {
+          newWidgets.push(id)
+        }
+      }
+    })
+
+    setActiveWidgets(newWidgets)
+    setShowAddWidget(false)
+  }
+
+  const renderWidget = (widgetId: string) => {
+    const widgetComponents: Record<string, JSX.Element> = {
+      simulator: <Simulator onRemove={() => handleRemoveWidget("simulator")} />,
+      "channel-breakdown": <ChannelBreakdown onRemove={() => handleRemoveWidget("channel-breakdown")} />,
+      "conversation-engagement": (
+        <ConversationEngagement onRemove={() => handleRemoveWidget("conversation-engagement")} />
+      ),
+      "connected-channels": <ConnectedChannels onRemove={() => handleRemoveWidget("connected-channels")} />,
+      "skills-experts": <SkillsExperts onRemove={() => handleRemoveWidget("skills-experts")} />,
+      "conversations-closed": <ChannelBreakdown onRemove={() => handleRemoveWidget("conversations-closed")} />,
+      "messages-per-day": <ChannelBreakdown onRemove={() => handleRemoveWidget("messages-per-day")} />,
+      "favorite-colors": <ConnectedChannels onRemove={() => handleRemoveWidget("favorite-colors")} />,
+      "popular-platforms": <SkillsExperts onRemove={() => handleRemoveWidget("popular-platforms")} />,
+    }
+    return widgetComponents[widgetId] || null
+  }
+
+  const leftColumnIds = [
+    "simulator",
+    "channel-breakdown",
+    "conversations-closed",
+    "messages-per-day",
+    "conversation-engagement",
+  ]
+  const rightColumnIds = ["connected-channels", "skills-experts", "favorite-colors", "popular-platforms"]
+
+  const leftWidgets = activeWidgets.filter((id) => leftColumnIds.includes(id))
+  const rightWidgets = activeWidgets.filter((id) => rightColumnIds.includes(id))
+
+  if (showSplash) {
+    return <SplashScreen onEnter={handleEnterPrototype} />
+  }
+
   return (
-    <div className="space-y-8">
-      <section className="flex flex-col gap-2">
-        <p className="text-sm font-medium text-[#2F8FFF]">Welcome back, Catherine</p>
-        <div>
-          <h1 className="text-3xl font-semibold text-[#3B4760]">Home</h1>
-          <p className="mt-2 max-w-3xl text-sm text-[#6A738A]">
-            Track performance across your conversational AI estate, monitor adoption,
-            and stay on top of live activity from every connected channel.
-          </p>
-        </div>
-      </section>
+    <div className="min-h-screen bg-[#F6F8FA]">
+      <Header onShowSplash={handleShowSplash} showingDashboard={!showSplash} />
 
-      <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-        {stats.map(({ title, value, trend, icon: Icon }) => (
-          <div
-            key={title}
-            className="rounded-lg border border-[#E8F0FB] bg-white p-5 shadow-sm"
+      <main className="container mx-auto px-6 py-6">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-semibold text-[#3B4760]">Engagement Overview</h1>
+          <Button
+            onClick={() => setShowAddWidget(true)}
+            variant="outline"
+            className="gap-2 bg-white border-[#E8F0FB] text-[#3B4760] hover:bg-[#E8F0FB]"
           >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-sm font-medium text-[#6A738A]">{title}</p>
-                <p className="mt-4 text-3xl font-semibold text-[#3B4760]">{value}</p>
-              </div>
-              <div className="rounded-lg bg-[#E8F0FB] p-3 text-[#2F8FFF]">
-                <Icon className="h-5 w-5" />
-              </div>
-            </div>
-            <div className="mt-6 flex items-center gap-2 text-sm text-[#2F8FFF]">
-              <ArrowUpRight className="h-4 w-4" />
-              <span>{trend}</span>
-            </div>
-          </div>
-        ))}
-      </section>
-
-      <section className="grid gap-5 xl:grid-cols-[1.5fr_1fr]">
-        <div className="rounded-lg border border-[#E8F0FB] bg-white shadow-sm">
-          <div className="flex items-center justify-between border-b border-[#E8F0FB] px-6 py-4">
-            <div>
-              <h2 className="text-lg font-semibold text-[#3B4760]">Recent Activity</h2>
-              <p className="mt-1 text-sm text-[#6A738A]">
-                Real-time conversation and platform events from the last 24 hours.
-              </p>
-            </div>
-            <div className="flex items-center gap-2 rounded-full bg-[#E8F0FB] px-3 py-1 text-xs font-semibold text-[#2F8FFF]">
-              <Sparkles className="h-3.5 w-3.5" />
-              Live feed
-            </div>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-left text-sm">
-              <thead className="bg-[#F6F8FA] text-[#6A738A]">
-                <tr>
-                  <th className="px-6 py-3 font-medium">Event</th>
-                  <th className="px-6 py-3 font-medium">Channel</th>
-                  <th className="px-6 py-3 font-medium">Customer</th>
-                  <th className="px-6 py-3 font-medium">Status</th>
-                  <th className="px-6 py-3 font-medium">Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentActivity.map((item) => (
-                  <tr key={`${item.event}-${item.time}`} className="border-t border-[#E8F0FB]">
-                    <td className="px-6 py-4 font-medium text-[#3B4760]">{item.event}</td>
-                    <td className="px-6 py-4 text-[#6A738A]">{item.channel}</td>
-                    <td className="px-6 py-4 text-[#6A738A]">{item.customer}</td>
-                    <td className="px-6 py-4">
-                      <span className="rounded-full bg-[#E8F0FB] px-2.5 py-1 text-xs font-semibold text-[#2F8FFF]">
-                        {item.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-[#94A3B8]">{item.time}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+            <Plus className="h-4 w-4" />
+            Add Widget
+          </Button>
         </div>
 
-        <div className="rounded-lg border border-[#E8F0FB] bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-[#3B4760]">Platform Snapshot</h2>
-          <div className="mt-6 space-y-4">
-            {[
-              ["Automation success rate", "96.8%"],
-              ["Average response time", "1.4 sec"],
-              ["CSAT from live journeys", "4.7 / 5"],
-              ["Escalations to human", "8.2%"],
-            ].map(([label, value]) => (
-              <div
-                key={label}
-                className="flex items-center justify-between rounded-lg border border-[#E8F0FB] bg-[#F6F8FA] px-4 py-3"
-              >
-                <span className="text-sm text-[#6A738A]">{label}</span>
-                <span className="text-sm font-semibold text-[#3B4760]">{value}</span>
-              </div>
+        <div className="grid grid-cols-12 gap-6">
+          <div className="col-span-12 lg:col-span-8 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {leftWidgets
+                .filter((id) =>
+                  ["simulator", "channel-breakdown", "conversations-closed", "messages-per-day"].includes(id),
+                )
+                .map((id) => (
+                  <div key={id}>{renderWidget(id)}</div>
+                ))}
+            </div>
+            {leftWidgets
+              .filter((id) => ["conversation-engagement"].includes(id))
+              .map((id) => (
+                <div key={id}>{renderWidget(id)}</div>
+              ))}
+          </div>
+
+          <div className="col-span-12 lg:col-span-4 space-y-6">
+            {rightWidgets.map((id) => (
+              <div key={id}>{renderWidget(id)}</div>
             ))}
           </div>
         </div>
-      </section>
+      </main>
+
+      <AddWidgetModal
+        open={showAddWidget}
+        onClose={() => setShowAddWidget(false)}
+        onAddWidgets={handleAddWidgets}
+        activeWidgets={activeWidgets}
+      />
     </div>
-  );
+  )
 }

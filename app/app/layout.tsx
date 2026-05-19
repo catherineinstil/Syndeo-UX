@@ -1,26 +1,25 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import Nav from "@/components/nav";
-import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import type React from "react"
+import type { Metadata } from "next"
+import { Analytics } from "@vercel/analytics/next"
+import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Syndeo – Conversational AI Platform",
+  title: "SYNDEO - Conversational AI Platform",
   description: "Multi-channel conversational AI management platform",
-};
+  generator: "v0.app",
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="h-full">
-      <body className={`${inter.className} min-h-full bg-[#F6F8FA] text-[#3B4760] antialiased`}>
-        <Nav />
-        <main className="container mx-auto px-6 py-8">{children}</main>
+    <html lang="en">
+      <body className="antialiased">
+        {children}
+        <Analytics />
       </body>
     </html>
-  );
+  )
 }

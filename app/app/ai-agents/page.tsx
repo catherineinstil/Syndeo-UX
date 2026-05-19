@@ -1,137 +1,167 @@
-import Link from "next/link";
-import {
-  Briefcase,
-  Building2,
-  HeartPulse,
-  House,
-  Plane,
-  ReceiptText,
-  ShieldCheck,
-  ShoppingBag,
-  Smartphone,
-  Store,
-  UserRoundSearch,
-  Wallet,
-} from "lucide-react";
+"use client"
+
+import { useState } from "react"
+import { Header } from "@/components/header"
+import { AgentCard } from "@/components/agent-card"
+import { AgentModal } from "@/components/agent-modal"
+import { Target, MessageCircleQuestion, Compass, Search, Heart, ShoppingCart, TrendingUp, MapPin } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 const verticals = [
-  { label: "Retail", icon: Store, active: true },
-  { label: "Finance", icon: Wallet },
-  { label: "Healthcare", icon: HeartPulse },
-  { label: "Housing", icon: House },
-  { label: "Insurance", icon: ShieldCheck },
-  { label: "Travel & Leisure", icon: Plane },
-  { label: "Utilities", icon: ReceiptText },
-  { label: "Telecommunications", icon: Smartphone },
-];
+  "Retail",
+  "Finance",
+  "Healthcare",
+  "Housing",
+  "Insurance",
+  "Travel & Leisure",
+  "Utilities",
+  "Telecommunications",
+]
 
-const agents = [
-  {
-    title: "Marketing Lead Generation",
-    description:
-      "Proactively engage website visitors, asking about their shopping preferences and guiding them toward tailored product journeys.",
-    icon: Briefcase,
-  },
-  {
-    title: "FAQ",
-    description:
-      "Enable customers to ask questions and receive responses to common questions.",
-    icon: ShoppingBag,
-  },
-  {
-    title: "Discovery",
-    description:
-      "Enable customers to conversationally search for and pinpoint content on a website.",
-    icon: UserRoundSearch,
-  },
-  {
-    title: "Product Search",
-    description:
-      "Show customer products and services based on their previous browsing or purchase history. Requires access to a customer data platform.",
-    icon: ShoppingBag,
-  },
-  {
-    title: "Branch Locator",
-    description:
-      "The Branch Locator AI Agent allows a caller to locate a branch local to their current address.",
-    icon: Building2,
-  },
-  {
-    title: "Sales Product Recommendation",
-    description:
-      "Recommend products to customers based on previous buying history.",
-    icon: Store,
-  },
-  {
-    title: "Cart Abandonment",
-    description:
-      "Offer help with checkout or provide one-time limited discount based on products.",
-    icon: ReceiptText,
-  },
-  {
-    title: "Cross-sell / Up-sell",
-    description:
-      "Suggest complementary or premium products during the purchasing process.",
-    icon: ShoppingBag,
-  },
-];
+const agents = {
+  Marketing: [
+    {
+      id: "lead-generation",
+      title: "Lead Generation",
+      description:
+        "Proactively engage website visitors, asking about their shopping preferences or what they're looking to buy, and capture their contact information for future marketing campaigns.",
+      icon: Target,
+      iconColor: "#9333EA",
+    },
+    {
+      id: "faq",
+      title: "FAQ",
+      description: "Enable customers to ask questions and receive responses to common questions.",
+      icon: MessageCircleQuestion,
+      iconColor: "#6B7280",
+    },
+    {
+      id: "discovery",
+      title: "Discovery",
+      description: "Enable customers to conversationally search for and pinpoint content on a website.",
+      icon: Compass,
+      iconColor: "#06B6D4",
+    },
+    {
+      id: "product-search",
+      title: "Product Search",
+      description:
+        "Show customer products and services based on their previous browsing or purchase history. Requires access to a customer data or customer relationship platform.",
+      icon: Search,
+      iconColor: "#6B7280",
+    },
+    {
+      id: "branch-locator",
+      title: "Branch Locator",
+      description:
+        "The Branch Locator AI Agent allows a caller to locate a branch local to their current address. The Agent initially asks for a Postcode, however if the customer cannot provide this then the Agent will ask for an Address instead.",
+      icon: MapPin,
+      iconColor: "#8B5CF6",
+      hasVariants: true,
+    },
+  ],
+  Sales: [
+    {
+      id: "product-recommendation",
+      title: "Product Recommendation",
+      description:
+        "Recommend products to customers based on previous buying history or information collected during a conversation or journey.",
+      icon: Heart,
+      iconColor: "#EC4899",
+      hasVariants: true,
+    },
+    {
+      id: "cart-abandonment",
+      title: "Cart Abandonment",
+      description:
+        "Offer help with checkout or provide one-time limited discount based on products or time or activity spent in a cart.",
+      icon: ShoppingCart,
+      iconColor: "#6B7280",
+    },
+    {
+      id: "cross-sell",
+      title: "Cross-sell / Up-sell",
+      description: "Suggest complementary or premium products during the purchasing process based on need or budget.",
+      icon: TrendingUp,
+      iconColor: "#10B981",
+    },
+  ],
+}
 
 export default function AIAgentsPage() {
+  const [activeVertical, setActiveVertical] = useState("Retail")
+  const [selectedAgent, setSelectedAgent] = useState<string | null>(null)
+  const router = useRouter()
+
+  const handleInstall = (agentId: string, variantId?: string) => {
+    console.log("[v0] Installing agent:", agentId, "variant:", variantId)
+    setTimeout(() => {
+      router.push("/integrations")
+    }, 500)
+  }
+
+  const handleAgentClick = (agentId: string) => {
+    setSelectedAgent(agentId)
+  }
+
   return (
-    <div className="-mx-6 -my-8 flex min-h-[calc(100vh-81px)] bg-[#F6F8FA]">
-      <aside className="w-64 shrink-0 border-r border-[#E8F0FB] bg-white px-4 py-6">
-        <h1 className="px-3 text-lg font-semibold text-[#3B4760]">Your Verticals</h1>
-        <nav className="mt-6 space-y-1">
-          {verticals.map(({ label, icon: Icon, active }) => (
-            <Link
-              key={label}
-              href="#"
-              className={`flex items-center gap-3 border-l-4 px-3 py-2.5 text-sm font-medium transition-colors ${
-                active
-                  ? "border-[#2F8FFF] bg-[#E8F0FB] text-[#2F8FFF]"
-                  : "border-transparent text-[#6A738A] hover:bg-[#F6F8FA] hover:text-[#3B4760]"
-              }`}
-            >
-              <Icon className="h-4 w-4" />
-              {label}
-            </Link>
-          ))}
-        </nav>
-      </aside>
+    <div className="min-h-screen bg-[#F6F8FA]">
+      <Header />
 
-      <div className="flex-1 px-8 py-8">
-        <div className="max-w-3xl">
-          <p className="text-sm font-medium text-[#2F8FFF]">Retail vertical</p>
-          <h2 className="mt-2 text-3xl font-semibold text-[#3B4760]">AI Agents</h2>
-          <p className="mt-3 text-sm leading-6 text-[#6A738A]">
-            Choose from prebuilt Syndeo agents designed to accelerate automation,
-            customer support, discovery, and conversion across retail experiences.
-          </p>
-        </div>
+      <main className="flex">
+        {/* Left Sidebar */}
+        <aside className="w-64 bg-white border-r border-[#E8F0FB] min-h-[calc(100vh-64px)]">
+          <div className="p-6">
+            <h2 className="text-base font-semibold text-[#3B4760] mb-4">Your Verticals</h2>
+            <nav className="space-y-1">
+              {verticals.map((vertical) => (
+                <button
+                  key={vertical}
+                  onClick={() => setActiveVertical(vertical)}
+                  className={`w-full text-left px-4 py-2 text-sm rounded-md transition-colors relative ${
+                    activeVertical === vertical
+                      ? "text-[#3B4760] font-medium bg-[#E8F0FB]"
+                      : "text-[#6A738A] hover:bg-[#F6F8FA]"
+                  }`}
+                >
+                  {activeVertical === vertical && (
+                    <span className="absolute left-0 top-0 bottom-0 w-1 bg-[#2F8FFF] rounded-r" />
+                  )}
+                  {vertical}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </aside>
 
-        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {agents.map(({ title, description, icon: Icon }) => (
-            <div
-              key={title}
-              className="flex h-full flex-col rounded-lg border border-[#E8F0FB] bg-white p-6 shadow-sm"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#E8F0FB] text-[#2F8FFF]">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <span className="rounded-full bg-[#E8F0FB] px-3 py-1 text-xs font-semibold text-[#2F8FFF]">
-                  Published by Syndeo
-                </span>
+        {/* Main Content */}
+        <div className="flex-1 p-8">
+          {Object.entries(agents).map(([section, items]) => (
+            <div key={section} className="mb-8">
+              {/* Section Header */}
+              <div className="bg-gradient-to-r from-[#4B6CB7] to-[#5B7FC7] rounded-lg px-6 py-4 mb-6">
+                <h3 className="text-xl font-semibold text-white">{section}</h3>
               </div>
-              <h3 className="mt-5 text-lg font-semibold text-[#3B4760]">{title}</h3>
-              <p className="mt-3 flex-1 text-sm leading-6 text-[#6A738A]">{description}</p>
-              <button className="mt-6 inline-flex items-center justify-center rounded-lg bg-[#2F8FFF] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#1E7FEF]">
-                Use Agent
-              </button>
+
+              {/* Agent Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {items.map((agent) => (
+                  <AgentCard key={agent.id} {...agent} onClick={() => handleAgentClick(agent.id)} />
+                ))}
+              </div>
             </div>
           ))}
         </div>
-      </div>
+      </main>
+
+      {/* Modal */}
+      {selectedAgent && (
+        <AgentModal
+          agentId={selectedAgent}
+          onClose={() => setSelectedAgent(null)}
+          onInstall={(variantId) => handleInstall(selectedAgent, variantId)}
+        />
+      )}
     </div>
-  );
+  )
 }
