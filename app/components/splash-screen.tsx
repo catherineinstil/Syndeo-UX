@@ -9,6 +9,8 @@ interface SplashScreenProps {
   onEnter: () => void
 }
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
 export function SplashScreen({ onEnter }: SplashScreenProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F8F9FC] via-white to-[#F8F9FC] flex items-center justify-center p-6">
@@ -18,7 +20,7 @@ export function SplashScreen({ onEnter }: SplashScreenProps) {
           <div className="bg-white rounded-2xl shadow-lg p-8 inline-block">
             <div className="flex items-center gap-8">
               <Image
-                src="/images/syndeo-logo.png"
+                src={`${BASE_PATH}/images/syndeo-logo.png`}
                 alt="SYNDEO"
                 width={200}
                 height={60}
@@ -27,7 +29,7 @@ export function SplashScreen({ onEnter }: SplashScreenProps) {
               />
               <div className="h-16 w-px bg-gray-300" />
               <Image
-                src="/images/instil-logo.png"
+                src={`${BASE_PATH}/images/instil-logo.png`}
                 alt="Instil"
                 width={160}
                 height={60}

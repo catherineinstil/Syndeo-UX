@@ -13,6 +13,8 @@ interface HeaderProps {
   showingDashboard?: boolean
 }
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
 export function Header({ onShowSplash, showingDashboard }: HeaderProps = {}) {
   const pathname = usePathname()
 
@@ -24,7 +26,7 @@ export function Header({ onShowSplash, showingDashboard }: HeaderProps = {}) {
             {onShowSplash ? (
               <button onClick={onShowSplash} className="flex items-center cursor-pointer">
                 <Image
-                  src="/images/syndeo-logo.png"
+                  src={`${BASE_PATH}/images/syndeo-logo.png`}
                   alt="SYNDEO"
                   width={120}
                   height={32}
@@ -35,7 +37,7 @@ export function Header({ onShowSplash, showingDashboard }: HeaderProps = {}) {
             ) : (
               <Link href="/" className="flex items-center">
                 <Image
-                  src="/images/syndeo-logo.png"
+                  src={`${BASE_PATH}/images/syndeo-logo.png`}
                   alt="SYNDEO"
                   width={120}
                   height={32}
