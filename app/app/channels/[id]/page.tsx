@@ -27,6 +27,22 @@ const channelVariables: Record<string, string[]> = {
   default: ["agent_id", "channel", "conversation_id", "user_id", "session_id"],
 }
 
+export async function generateStaticParams() {
+  return [
+    { id: "dialogflow-cx" },
+    { id: "desktop" },
+    { id: "facebook" },
+    { id: "line" },
+    { id: "mobile" },
+    { id: "slack" },
+    { id: "sms" },
+    { id: "telegram" },
+    { id: "voice" },
+    { id: "web" },
+    { id: "whatsapp" },
+  ]
+}
+
 export default async function ChannelDetailPage({
   params,
 }: {
