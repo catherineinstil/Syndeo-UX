@@ -1,3 +1,6 @@
 references/
 app/.next/
 app/node_modules/
+prototype/v0-source/
+.DS_Store
+**/.DS_Store
