@@ -6,7 +6,7 @@ UX redesign project by [Instil](https://instil.co) for [Syndeo](https://syndeo.c
 ## Getting Started
 
 ```bash
-git clone https://github.com/catherineinstil/Syndeo.git
+git clone https://github.com/instil/Syndeo-UX.git
 cd Syndeo/app
 npm install
 npm run dev
