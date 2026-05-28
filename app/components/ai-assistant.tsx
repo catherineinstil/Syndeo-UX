@@ -165,7 +165,7 @@ export function AIAssistant({ isNewUser = false, onDismiss }: AIAssistantProps) 
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-4 min-h-[300px] max-h-[500px]">
+      <div className="flex-1 overflow-y-auto p-6 space-y-4 min-h-0">
         {messages.map((message) => (
           <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
             <div

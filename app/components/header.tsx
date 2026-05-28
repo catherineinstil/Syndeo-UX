@@ -76,6 +76,17 @@ export function Header({ onShowSplash, showingDashboard }: HeaderProps = {}) {
                 </Link>
               )}
               <Link
+                href="/flows"
+                className={cn(
+                  "text-sm font-medium transition-colors relative",
+                  pathname?.startsWith("/flows")
+                    ? "text-[#2F8FFF] after:absolute after:bottom-[-17px] after:left-0 after:right-0 after:h-0.5 after:bg-[#2F8FFF]"
+                    : "text-[#6A738A] hover:text-[#2F8FFF]",
+                )}
+              >
+                Flows
+              </Link>
+              <Link
                 href="/reports"
                 className={cn(
                   "text-sm font-medium transition-colors relative",
@@ -96,17 +107,6 @@ export function Header({ onShowSplash, showingDashboard }: HeaderProps = {}) {
                 )}
               >
                 AI Agents
-              </Link>
-              <Link
-                href="/flows"
-                className={cn(
-                  "text-sm font-medium transition-colors relative",
-                  pathname?.startsWith("/flows")
-                    ? "text-[#2F8FFF] after:absolute after:bottom-[-17px] after:left-0 after:right-0 after:h-0.5 after:bg-[#2F8FFF]"
-                    : "text-[#6A738A] hover:text-[#2F8FFF]",
-                )}
-              >
-                Flows
               </Link>
               <Link
                 href="/ai-workbench"

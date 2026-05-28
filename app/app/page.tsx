@@ -5,6 +5,7 @@ import { Header } from "@/components/header"
 import { SplashScreen } from "@/components/splash-screen"
 import { HomepageNewUser } from "@/components/homepage-new-user"
 import { HomepageReturningUser } from "@/components/homepage-returning-user"
+import { CompactSimulator } from "@/components/compact-simulator"
 
 export default function DashboardPage() {
   const [showSplash, setShowSplash] = useState(true)
@@ -40,6 +41,7 @@ export default function DashboardPage() {
       <main>
         {isNewUser ? <HomepageNewUser /> : <HomepageReturningUser />}
       </main>
+      <CompactSimulator />
     </div>
   )
 }
